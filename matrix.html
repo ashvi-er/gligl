@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Multiplication</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playwrite+ES+Deco+Guides&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --border: rgba(183, 180, 180, 0.396);
+            --text: #ffffff;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", serif;
+            font-weight: 100;
+            font-style: normal;
+            color: white;
+            outline: none;
+        }
+
+        body {
+            background-image: url(https://files.oaiusercontent.com/file-Dqd4hEQwHs4gihcioVHNnW?se=2024-12-25T15%3A30%3A36Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Da0bdf4eb-6d5c-489a-b986-1657644744d4.webp&sig=yf2aHtI6j1fVJngkAM/QEHL44EJ2KmZNsrLtcl9PTqE%3D);
+            min-height: 100vh;
+            background-position: center;
+            background-repeat: repeat;
+            margin: 0;
+        }
+
+        .navbar {
+            background-color: rgba(194, 194, 214, 0);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            width: 100%;
+            flex-wrap: wrap;
+            text-align: center;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar li {
+            margin: 0 10px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            transition: background 0.3s;
+        }
+
+        .navbar a:hover {
+            background: #575757;
+            border-radius: 5px;
+        }
+
+        .buttons a {
+            color: rgb(255, 255, 255);
+            font-weight: 500;
+            text-decoration: none;
+            padding: 20px 20px;
+            transition: color, border-radius, 0.3s;
+            font-family: sans-serif;
+        }
+
+        .buttons a:hover {
+            background-color: rgba(0, 0, 0, 0.186);
+            border-radius: 20px;
+        }
+
+        .intro {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            padding: 30px 20px;
+            width: 90%;
+            max-width: 800px;
+            background-color: #0d1725;
+            margin-top: 30px;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px #000000;
+            position: relative;
+            text-shadow: 1px 4px 1px #000000;
+        }
+
+        .container h1 {
+            margin: 20px;
+            color: white;
+            text-shadow: 1px 4px 1px #000000;
+            text-align: center;
+        }
+
+        .container p {
+            color: white;
+            margin: 10px 5px;
+            text-align: center;
+        }
+
+        .box {
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .box input {
+            width: 50px;
+            height: 50px;
+            background-color: transparent;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px var(--border);
+            text-align: center;
+            outline: 0;
+        }
+
+        .runner {
+            padding: 10px;
+            border-radius: 10px;
+            background-color: transparent;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+        }
+
+        .runner:hover {
+            background-color: white;
+            color: black;
+            font-weight: 500;
+        }
+
+        .runner:active {
+            transform: scale(0.5);
+        }
+
+        .inputbox {
+            width: 45px;
+            height: 45px;
+            border: 1px solid rgb(176, 165, 165);
+            border-radius: 10px;
+            text-align: center;
+            background-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .matrix {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .matrix1,
+        .matrix2 {
+            display: grid;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+        }
+
+        .result {
+            background-color: rgb(58, 58, 58);
+            margin-top: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+            display: none;
+        }
+
+        .resultmatrix {
+            display: grid;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            margin-top: 20px;
+        }
+
+        .resultmatrix .inputbox {
+            background-color: rgba(255, 255, 255, 0);
+            color: rgb(255, 255, 255);
+            font-size: 16px;
+            border: 1px solid #555;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+        }
+
+        .cc {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+
+            .container {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .matrix1,
+            .matrix2 {
+                grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            }
+
+            .inputbox {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .matrix1,
+            .matrix2,
+            .resultmatrix {
+                grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+            }
+
+            .inputbox {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+
+            .buttons a {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="matrix.html"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="intro">
+        <nav class="navbar">
+            <div class="buttons">
+                <a href="#">MATRIX CALCULATOR</a>
+            </div>
+        </nav>
+        <div class="container">
+            <h1>Matrix Multiplication</h1>
+            <hr>
+            <p>Perform matrix multiplication with complex numbers online for free. After calculation, you can multiply the result by another matrix right here!</p>
+
+            <div class="box">
+                <p>Matrix A dimension: <input type="number" class="Ai" max="5" min="0" value="3"> X <input value="3" type="number" class="Aj" oninput="doer()" max="5" min="0"></p>
+                <p>Matrix B dimension: <input type="number" class="Bi" max="5" min="0" oninput="doer2()" value="3"> X <input type="number" value="3" class="Bj" max="5" min="0"></p>
+                <p class="wa">Rows of Matrix B must equal columns of Matrix A</p>
+                <button class="runner" onclick="bigfun()">Set Matrices</button>
+            </div>
+
+            <div class="matrix">
+                <h1>Matrix A</h1>
+                <div class="matrix1"></div>
+                <hr>
+                <h1>Matrix B</h1>
+                <div class="matrix2"></div>
+            </div>
+
+            <div class="butt"></div>
+            <div class="cc">
+                <div class="result">
+                    <h1>Resultant Matrix</h1>
+                    <hr>
+                    <div class="resultmatrix"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer style="background-color: #000000; color: #ffffff; padding: 20px 0; text-align: center; font-size: 14px; margin-top: 20px;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <p>&copy; 2024. Aashika GC. All Rights Reserved.</p>
+            <p>DEVELOPED BY AASHIKA, AMSHU & PRAKRITI</p>
+        </div>
+    </footer>
+
+    <script>
+        const aI = document.getElementsByClassName("Ai")[0];
+        const aJ = document.getElementsByClassName("Aj")[0];
+        const bI = document.getElementsByClassName("Bi")[0];
+        const bJ = document.getElementsByClassName("Bj")[0];
+        const matrix1 = document.getElementsByClassName("matrix1")[0];
+        const matrix2 = document.getElementsByClassName("matrix2")[0];
+        const button = document.getElementsByClassName("butt")[0];
+        const resultMatrix = document.getElementsByClassName("resultmatrix")[0];
+
+        function doer() {
+            bI.value = aJ.value;
+        }
+
+        function doer2() {
+            aJ.value = bI.value;
+        }
+
+        function bigfun() {
+            matrix1.innerHTML = "";
+            matrix2.innerHTML = "";
+            button.innerHTML = '<button class="runner" onclick="calculate()">Calculate</button>';
+
+            const loop1 = aI.value * aJ.value;
+            for (let i = 0; i < loop1; i++) {
+                matrix1.innerHTML += '<input type="number" class="inputbox">';
+            }
+            matrix1.style.gridTemplateColumns = `repeat(${aJ.value}, 0.1fr)`;
+
+            const loop2 = bI.value * bJ.value;
+            for (let i = 0; i < loop2; i++) {
+                matrix2.innerHTML += '<input type="number" class="inputbox">';
+            }
+            matrix2.style.gridTemplateColumns = `repeat(${bJ.value}, 0.1fr)`;
+        }
+
+        function calculate() {
+            const rowsA = parseInt(aI.value);
+            const colsA = parseInt(aJ.value);
+            const rowsB = parseInt(bI.value);
+            const colsB = parseInt(bJ.value);
+
+            if (colsA !== rowsB) {
+                document.querySelector(".wa").textContent = "Error: Columns of Matrix A must match rows of Matrix B for multiplication.";
+                document.querySelector(".wa").style.color = "red";
+                return;
+            }
+
+            document.querySelector(".wa").textContent = "Rows of Matrix B must equal columns of Matrix A";
+            document.querySelector(".wa").style.color = "white";
+
+            const valuesA = Array.from(matrix1.querySelectorAll(".inputbox")).map(input => Number(input.value));
+            const valuesB = Array.from(matrix2.querySelectorAll(".inputbox")).map(input => Number(input.value));
+
+            const matrixA = [];
+            for (let i = 0; i < rowsA; i++) {
+                matrixA.push(valuesA.slice(i * colsA, (i + 1) * colsA));
+            }
+
+            const matrixB = [];
+            for (let i = 0; i < rowsB; i++) {
+                matrixB.push(valuesB.slice(i * colsB, (i + 1) * colsB));
+            }
+
+            const result = [];
+            for (let i = 0; i < rowsA; i++) {
+                const row = [];
+                for (let j = 0; j < colsB; j++) {
+                    let sum = 0;
+                    for (let k = 0; k < colsA; k++) {
+                        sum += matrixA[i][k] * matrixB[k][j];
+                    }
+                    row.push(sum);
+                }
+                result.push(row);
+            }
+
+            resultMatrix.innerHTML = "";
+            resultMatrix.style.gridTemplateColumns = `repeat(${colsB}, 0.1fr)`;
+            result.forEach(row => {
+                row.forEach(value => {
+                    resultMatrix.innerHTML += `<div class="inputbox">${value}</div>`;
+                });
+            });
+
+            document.querySelector(".result").style.display = "block";
+        }
+    </script>
+</body>
+
+</html>
